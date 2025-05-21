@@ -1,0 +1,11 @@
+<p>Estimado {{ quote.cliente.contacto }} de la empresa {{quote.cliente.cliente_empresa}},</p>
+
+<p>Se ha generado una nueva cotización: <strong>{{ quote.nombre }}</strong>.</p>
+
+<p><strong>Descripción:</strong></p>
+<p>{{ quote.description }}</p>
+
+<p>Adjunto encontrarás el archivo PDF con los detalles.</p>
+
+<p>Gracias,<br>
+Atte. {{user.first_name|title}} {{user.last_name|title}} - {{user.company}}</p>

@@ -1,0 +1,106 @@
+{% load filters%}
+{%load static%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle cotización</title>
+    <link rel="stylesheet" href="{% static 'quotes/style_detail.css'%}?v=12345104">
+</head>
+<body>
+    <main>
+    <div class="quote-card">
+     <div class="quote-header">
+        <a href="{% url 'quotes:quotes_all' %}" class="back-link">
+            <img src="{% static 'quotes/icons/back.png' %}" alt="Back">
+            <span>Inicio</span>
+        </a>
+    </div>
+
+
+        {% if quote.usuario == user %}
+        <div class="fields-wrapper" > 
+            <div class="field-name">Fecha</div> 
+            <div class="field-value">{{ quote.fecha_creacion|date:"d/m/Y"}}</div>
+    
+        </div>
+        <div class="fields-wrapper">
+            <div class="field-name">
+                Título
+            </div>
+            
+            <div class="field-value">{{ quote.nombre }}</div>
+
+        </div>
+        
+        <div class="fields-wrapper">
+            <div class="field-name">
+                Descripción
+            </div>
+            <div class="text-area">
+            {{ quote.description }}
+            </div>
+        </div>
+        <div class="fields-wrapper">
+            <div class="field-name">
+                Contacto
+            </div>
+            <div class="field-value">
+            {{ quote.cliente.contacto }}
+            </div>
+
+        </div>
+        
+
+        <div class="fields-wrapper">
+            <div class="field-name">Email</div>
+            <div class="field-value">{{quote.cliente.email_contacto}}</div>
+
+        </div>
+        <div class="fields-wrapper">
+            <div class="field-name">Empresa</div>
+            <div class="field-value">
+            {{ quote.cliente.cliente_empresa }}
+            </div>
+
+        </div>
+
+
+
+        <div class="fields-wrapper">
+            <div class="field-name">Costo total (S/.)</div>
+            <div class="field-value">{{quote.precio}}</div>
+        </div>
+        <div class="fields-wrapper">
+            <div class="field-name">Estado</div>
+            <div class="field-value">
+            {{ quote.estado}}
+            </div>
+
+        </div>
+        <div class="fields-wrapper">
+            <div class="field-name">Link PDF</div>
+            <div class="field-value">
+
+                  {% if quote.pdf %}
+                <div>
+                    <a id="pdf-link" href="{{ quote.pdf.url }}" target="_blank">{{quote.pdf.name|basename}}</a>
+                </div>
+                {% else %}
+                    <p>No PDF disponible</p>
+                {% endif %}
+            </div>
+
+
+        </div>
+        {% endif %}
+    </div>
+    </main>
+
+
+</body>
+</html>
+

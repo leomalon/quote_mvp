@@ -1,0 +1,32 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminar</title>
+  <link rel="stylesheet" href="{% static 'quotes/style.css' %}">
+</head>
+<body>
+  
+</body>
+</html>
+
+{% block content %}
+<div class="delete-confirmation-card">
+  <div class="icon-wrapper">
+    <img src="{% static 'quotes/icons/advertencia.png' %}" alt="Warning">
+  </div>
+
+  <p class="delete-message">¿Estás seguro de querer eliminar?</p>
+
+  <form action="" method="POST" class="delete-form">
+    {% csrf_token %}
+    <div class="button-group">
+      <a href="{% url 'quotes:quotes_all' %}" class="cancel-button">Cancelar</a>
+      <input type="submit" value="Eliminar" class="delete-button">
+    </div>
+  </form>
+</div>
+{% endblock %}

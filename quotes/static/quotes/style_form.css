@@ -1,0 +1,139 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Spinnaker&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap');
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{ /*Es buena práctica*/
+    --main-blue: #1D3557;
+    --main-blue-transition: #0b4494;
+    --main-yellow: #F4B400;
+    --main-background: #FFFAFB;
+    --main-color-table: hsla(0, 0%, 85%, 0.80);
+    --main-color-nav: #FFFAFB;
+    --transition-button:rgba(255, 255, 255, 0.1);
+    --hover-row: hsla(0, 0%, 0%, 0.03);
+    --file-name: hsla(0, 0%, 0%, 0.50);
+    --input-border: hsla(0, 0%, 0%, 0.30);
+
+}
+
+body{
+  background-color: var(--main-background);
+  font-family: "DM Sans", sans-serif;
+  max-height: 100dvh;
+}
+
+.form-create{
+  height: 100dvh;
+  max-height: 100dvh;
+  align-content: center;
+  justify-items: center;
+}
+
+form {
+  background-color: var(--main-color-table);
+  padding: 2rem 2.5rem 2rem 2.5rem;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  width: 450px;
+  max-width: 90%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow-y: auto;
+}
+
+/* All inputs and textarea */
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-family: 'DM Sans';
+}
+
+/* Textarea size */
+form textarea {
+  max-height: 75px;
+  resize: vertical;
+}
+
+.actions-buttons {
+  display: flex;
+  gap: 2rem; 
+  margin-top: 1rem;
+}
+
+/* Submit and cancel buttons */
+form button[type="submit"] {
+  all:unset;
+  background-color: var(--main-yellow);
+  color: var(--main-color-nav);
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-weight: 550;
+  width: 15%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+form button[type="submit"]:hover {
+  background-color: #f4b300da;
+}
+
+form .btn-secondary {
+  background-color: var(--main-color-nav);
+  color: var(--main-blue);
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 550;
+  font-size: 0.8rem;
+  
+}
+
+form .btn-secondary:hover {
+  background-color: #f0f0f0;
+}
+
+/*New styles*/
+
+.estado{
+  width: 30%;
+
+}
+.estado select{
+  background-color: var(--main-blue);
+  color: var(--main-color-nav);
+}
+
+#custom-upload-btn {
+  background-color: var(--main-blue);
+  color: var(--main-color-nav);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#file-name {
+  margin-left: 10px;
+  color: var(--file-name);
+  font-size: 0.8rem;
+  font-family: 'DM Sans';
+}

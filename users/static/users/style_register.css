@@ -1,0 +1,95 @@
+body {
+  background-color: #fffafa;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.registration-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-card {
+  border: 1px solid #cdd1d5;
+  padding: 0.7rem 1.2rem; /* Reduced vertical padding ~15% */
+  border-radius: 6px;
+  background-color: white;
+  width: 100%;
+  max-width: 410px; /* Increased width ~10% (was 370px) */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.registration-card h4 {
+  text-align: center;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+  color: #1a3c66;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0rem;
+}
+
+.highlight {
+  color: #f4b400;
+  font-weight: 600;
+}
+
+form label {
+  display: block;
+  text-align: left;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+form input {
+  display: block;             /* Needed for margin auto to take effect */
+  width: 90%;
+  padding: 0.45rem;
+  font-size: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 0.15rem auto 0 auto; /* Top margin + horizontal center */
+}
+
+.btn-submit {
+  margin: 1.2rem auto 0 auto; /* top: 1.2rem, sides auto for centering */
+  display: block;             /* required for margin auto to work */
+  width: 70%;
+  padding: 0.55rem;
+  background-color: #0b2d53;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #0a2542;
+}
+
+.error-message {
+  color: #e63946;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+@media (max-height: 600px) {
+  .registration-card {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}

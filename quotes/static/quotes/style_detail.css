@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Spinnaker&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap');
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{ /*Es buena práctica*/
+    --main-blue: #1D3557;
+    --main-blue-transition: #0b4494;
+    --main-yellow-header: #f4b3008d;
+    --main-background: #FFFAFB;
+    --main-color-table: hsla(0, 0%, 85%, 0.80);
+    --main-color-nav: #FFFAFB;
+    --input-border: hsla(0, 0%, 0%, 0.30);
+    --input-detail: hsla(348, 100%, 99%, 0.95);
+    --field-value: hsla(0, 0%, 0%, 0.6); 
+
+}
+
+body{
+  background-color: var(--main-background);
+  font-family: "DM Sans", sans-serif;
+  max-height: 100dvh;
+}
+
+main{
+  height: 100dvh;
+  max-height: 100dvh;
+  align-content: center;
+  justify-items: center;
+}
+
+.quote-card {
+  background-color: var(--main-color-table);
+  padding: 2rem 2.5rem 2rem 2.5rem;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  width: 450px;
+  max-width: 90%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.fields-wrapper{
+  display: flex;
+  align-items: flex-start; /* Align both items at the top */
+  gap: 15px; 
+
+}
+
+.field-name{
+  flex: 0 0 100px; /* Fixed width (you can adjust this) */
+  font-weight: 450; /* Optional: make label bold */
+  color: var(--main-blue);
+  font-size:0.92rem;
+  border-radius: 4px;
+  height: 2rem;
+}
+
+
+.quote-card .field-value,
+.quote-card .text-area,
+.quote-card > div:not(.fields-wrapper):not(.quote-header) {
+  flex: 1;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-family: 'DM Sans';
+  background-color: var(--input-detail);
+  word-wrap: break-word; 
+  height: 2rem;
+  color:var(--field-value);
+}
+
+
+.quote-card .text-area{
+  height: 75px;
+  resize: vertical;
+  overflow-y:auto;
+  word-wrap: break-word;  
+  max-height: 100px;         
+}
+
+
+.quote-card #pdf-link {
+  text-decoration: none;
+  color: var(--field-value);
+}
+
+.quote-card #pdf-link:hover  {
+    color: var(--main-blue-transition);
+}
+
+
+.quote-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--main-blue);
+}
+
+.back-link img {
+  width: 20px;
+  margin-right: 8px;
+}
+
+.back-link span {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+

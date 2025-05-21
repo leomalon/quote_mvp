@@ -1,0 +1,236 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cotizaciones {{usuario.company}}</title>
+   <link rel="stylesheet" href="{% static 'quotes/style.css' %}?v=123457">
+   
+</head>
+<body>
+
+
+
+<nav class="navbar">
+    <div class="navbar-left"><h1>{{app_name}}</h1></div>
+    <div class="navbar-right">
+        {% if user.is_authenticated %}
+        <a href="{% url 'quotes:quotes_all'%}">Inicio</a>
+        <form action="{% url 'account_logout' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button id="button-salir" type="submit">Salir</button>
+        </form>
+
+        {% else %}
+        <a href="{% url 'login' %}?next={% url 'login' %}">Login</a>
+        {% endif %}
+
+    </div>
+
+</nav>
+
+<main class="main-container">
+    <div class="header-row">
+        <h3 id="table-tittle">Cotizaciones</h3>
+
+        <div class="actions">
+            <form method="get" action="{% url 'quotes:quotes_all' %}">
+                <input type="text" name="q" placeholder="Buscar cotización" value="{{ request.GET.q }}" class="buscar-input">
+                <button type="submit" class="btn-buscar">Buscar</button>
+            </form> 
+
+            <a href="{% url 'quotes:quote_create' %}" id="btn-new-coti">Nueva cotización</a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+{% if quote_list %}
+<div class="table-wrapper">
+
+<table class="table table-bordered table-hover align-middle text-center">
+    <thead class="table-light">
+        <tr>
+            <th></th>
+            <th>
+                <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/status.png' %}" alt="Status" width="16" height="16">
+                    <span>Status</span>
+                </span>
+            </th>
+
+            <th>
+                <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/cotizacion.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Código</span>
+                </span>
+            
+            </th>
+            <th>
+            
+                <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/cotizacion.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Cotización</span>
+                </span>
+
+            </th>
+            <th>
+            
+             <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/costo.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Costo total (S/.)</span>
+                </span>
+            
+            </th>
+            <th>
+                  <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/empresa.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Empresa</span>
+                </span>
+            </th>
+            <th>
+                 <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/fecha.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Fecha</span>
+                </span>
+            </th>
+            <th>
+                 <span class="th-icon-label">
+                    <img src="{% static 'quotes/icons/pdf.png' %}" alt="Codigo" width="16" height="16">
+                    <span>Link PDF</span>
+                </span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for quote in quote_list %}
+        <tr>
+            <td>
+                <a href="{% url 'quotes:quote_update' quote.id %}" class="btn btn-sm btn-outline-dark">
+                    <img src="{% static 'quotes/icons/editar.png' %}" alt="Edit" width="16" height="16">
+                </a>
+                <a href="{% url 'quotes:quote_delete' quote.id %}" class="btn btn-sm btn-outline-danger">
+                     <img src="{% static 'quotes/icons/borrar.png' %}" alt="Delete" width="16" height="16">
+                </a>
+            </td>
+            <td>
+                <span class="badge estado-badge {{ quote.estado|lower|slugify }}">
+                        <select name="estado" class="form-select d-inline w-auto"
+                        data-quote-id="{{ quote.id }}" onchange="updateEstado(this)">
+                        {% for key, value in quote.STATUS_CHOICES %}
+                            <option value="{{ key }}" {% if quote.estado == key %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                        {% endfor %}
+
+                        </select>
+                </span>
+            </td>
+            <td>{{ quote.cotizacion_id }}</td>
+            <td>
+                <a id="coti-nombre" href="{% url 'quotes:quote_detalle' quote.id %}">{{ quote.nombre }}</a>
+            </td>
+            <td>{{ quote.precio|floatformat:2 }}</td>
+            <td>{{ quote.cliente.cliente_empresa }}</td>
+            <td>{{ quote.fecha_creacion|date:"d/m/Y" }}</td>
+            <td><a id="pdf-detail" href="{{ quote.pdf.url }}" target="_blank">Ver PDF</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+</div>
+
+<div id="email-toast" style="
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 240px;
+  background-color: #4BB543; /* green */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-family: 'DM Sans', sans-serif;
+  z-index: 9999;
+">
+  ✅ La cotización fue enviada por correo exitosamente.
+</div>
+
+{% else %}
+<p>Aún no tienes cotizaciones. Agrega una nueva cotización</p>
+{% endif %}
+
+
+<!-- Hidden CSRF token to use in JavaScript -->
+<form id="csrf-form" style="display: none;">{% csrf_token %}</form>
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function getCSRFToken() {
+        return document.querySelector('#csrf-form input[name=csrfmiddlewaretoken]').value;
+    }
+
+    window.updateEstado = function(selectElement) {
+        const quoteId = selectElement.dataset.quoteId;
+        const newEstado = selectElement.value;
+        const csrfToken = getCSRFToken();
+        const newStatus = selectElement.value
+            .normalize("NFD") // separate accents from letters
+            .replace(/[\u0300-\u036f]/g, "") // remove accents
+            .toLowerCase()
+            .replace(/\s+/g, '-');
+        const badge = selectElement.closest('.estado-badge');
+
+        // Remove all previous status-related classes
+        badge.className = 'badge estado-badge'; // reset base classes
+        badge.classList.add(newStatus); // add the new status class
+
+        const updateUrl =  `{% url 'quotes:update_estado' 0 %}`.replace("0", quoteId);
+
+        fetch(updateUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'estado': newEstado
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert("Error al actualizar el estado.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error de red al actualizar el estado.");
+        });
+    };
+});
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("email_sent") === "1") {
+        const toast = document.getElementById("email-toast");
+        toast.style.display = "block";
+
+        // Remove param from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Hide toast after 3 seconds
+        setTimeout(() => {
+        toast.style.display = "none";
+        }, 4000);
+    }
+
+</script>
+{%endblock%}
+</body>
+</html>

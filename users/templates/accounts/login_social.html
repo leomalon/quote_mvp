@@ -1,0 +1,38 @@
+{%load static%}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'users/style.css' %}">
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-card">
+    <h3>LOG IN</h3>
+    <p>Bienvenido a <span class="highlight">CotiLink!</span></p>
+
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {{ form.email }}
+      {{ form.password }}
+      <button type="submit" class="btn-main">Ingresar</button>
+    </form>
+
+    <div class="divider">
+      <span>o</span>
+    </div>
+
+    <a href="{% provider_login_url 'google' %}" class="btn-google">Ingresar con Google</a>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+<!-- provider_login_url is a template tag from "django-allauth" not form Django auth's system.
+The built-in LoginView does not include anything form allauth. -->

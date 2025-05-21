@@ -1,0 +1,132 @@
+{% load static %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva cotización</title>
+  <link rel="stylesheet" href="{% static 'quotes/style_form.css' %}?v=123458">
+</head>
+<body>
+  
+
+{% block content %}
+
+
+<main>
+
+  <div class="form-create">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div>
+        {{ form.nombre }}
+      </div>
+      <div>
+        {{ form.description }}
+      </div>
+      <div>
+        {{ form.contacto }}
+      </div>
+      <div>
+        {{ form.email_contacto }}
+      </div>
+      <div>
+
+        {{ form.cliente_empresa}}
+      </div>
+      <div>
+        {{ form.precio}}
+      </div>
+      <div class="estado">
+
+        {{ form.estado}}
+      </div>
+      <div class="file-upload-wrapper">
+        {{ form.pdf.as_widget }}
+        
+        <!-- Custom button -->
+        <button type="button" id="custom-upload-btn">
+          {%if form.instance.pdf%}
+          Cambiar archivo PDF
+          {%else%}
+          Seleccionar archivo PDF
+          {%endif%}
+        </button>
+        
+        <!-- File name display -->
+        <span id="file-name">
+            {% if form.instance.pdf %}
+              {{ form.instance.pdf.name|basename }}
+            {%else%}
+
+              Ningún archivo seleccionado
+            {%endif%}
+
+        </span>
+      </div>
+
+      <!-- Here there is an html like this: <input id = "id_contacto"... -->
+
+      <!-- Link contacto input to datalist -->
+      <datalist id="contacto_list">
+        {% for cliente in contacto_data %}
+          <option value="{{ cliente.contacto }}"></option>
+        {% endfor %}
+      </datalist>
+
+      <script>
+        
+        // Script para hacer funcionar los botones personalizados
+        const fileInput = document.getElementById("id_pdf");
+        const uploadBtn = document.getElementById("custom-upload-btn");
+        const fileNameDisplay = document.getElementById("file-name");
+
+        uploadBtn.addEventListener("click", () => {
+          fileInput.click(); // triggers hidden file input
+        });
+
+        fileInput.addEventListener("change", () => {
+          const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "Ningún archivo seleccionado";
+          fileNameDisplay.textContent = fileName;
+        });
+        
+        // Inject contacto data as JSON safely
+        const contactoData = {{ contacto_data_json|safe }};
+
+        // Get the input by ID Django assigns (ensure the ID matches the form field name)
+        const contactoInput = document.getElementById('id_contacto');
+
+        // Attach the datalist to the input
+        contactoInput.setAttribute("list", "contacto_list"); //Tells the input field for contacto to use the datalist with ID "contacto_list" for autocomplete
+
+        contactoInput.addEventListener('change', () => { //It activates when the user selects or types something in the field
+          const match = contactoData.find(c => c.contacto === contactoInput.value);
+          if (match) {
+            // Autofill fields by ID (these fields must be in your form)
+            document.getElementById('id_email_contacto').value = match.email_contacto;
+            document.getElementById('id_cliente_empresa').value = match.cliente_empresa;
+          }
+        });
+      </script>
+      <div class="actions-buttons">
+        <button type="submit">Guardar</button>
+        <a href="{% url 'quotes:quotes_all' %}" class="btn btn-secondary">Cancelar</a>
+
+      </div>
+    </form>
+
+
+  </div>
+
+
+</main>
+
+{% endblock %}
+
+
+
+</body>
+</html>
+
+

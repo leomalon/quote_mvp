@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'users/style_register.css' %}">
+</head>
+<body>
+{% block content %}
+<div class="registration-container">
+    <div class="registration-card">
+        <h4>
+
+            {% if is_social_registration %}
+                 COMPLETE SU REGISTRO EN <span class="highlight">COTILINK</span>
+            {% else %}
+                    REGISTRO DE USUARIO EN <span class="highlight">COTILINK</span>
+            {% endif %}
+        
+        </h4>
+
+        <form method="post" novalidate autocomplete="off">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                {% if field.name == 'email' and is_social_registration %}
+                    <input type="email" class="input-field" value="{{ field.value }}" disabled>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+
+                {% if field.errors %}
+                    <div class="error-message">{{ field.errors|striptags }}</div>
+                {% endif %}
+            {% endfor %}
+
+            <button type="submit" class="btn-submit">
+                {% if is_social_registration %}
+                    Completar registro
+                {% else %}
+                    Registrarse
+                {% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+</body>
+</html>
