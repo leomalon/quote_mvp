@@ -6,7 +6,9 @@ cryptography==44.0.2
 dj-database-url==2.3.0
 Django==5.2
 django-allauth==65.7.0
+gunicorn==23.0.0
 idna==3.10
+packaging==25.0
 pycparser==2.22
 PyJWT==2.10.1
 requests==2.32.3
