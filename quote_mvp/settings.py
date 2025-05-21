@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wi5a(mhjjr5-q4+b$ap&%i@y5v@0lh-w8^lt!^x618_m(4z3=h'
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-for-local')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -101,8 +103,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'coti.link0@gmail.com'
-EMAIL_HOST_PASSWORD = 'nfzf ohzc cbth dlng'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
@@ -117,6 +119,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware'
 ]
+
+#This is for whitenoise to serve static files
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'quote_mvp.urls'
 
@@ -150,8 +155,6 @@ WSGI_APPLICATION = 'quote_mvp.wsgi.application'
 # }
 
 #This is for using Postgres in Railway
-import os
-import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -197,6 +200,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles" #For production
+
+#This is for whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
