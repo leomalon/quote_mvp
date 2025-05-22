@@ -2,11 +2,11 @@ from django.db import migrations
 
 def create_default_site(apps, schema_editor):
     Site = apps.get_model('sites', 'Site')
-    Site.objects.get_or_create(
+    Site.objects.update_or_create(
         id=1,
         defaults={
-            'domain': '127.0.0.1:8000',
-            'name': 'localhost'
+            'domain': 'gentle-gratitude-production.up.railway.app',
+            'name': 'Railway'
         }
     )
 
