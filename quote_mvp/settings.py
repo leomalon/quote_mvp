@@ -176,8 +176,8 @@ DATABASES = {
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'rLICSxjkgWdgNcCkGNSMrJipfgQllVEl',
-        'HOST': 'postgres-zopb.railway.internal',
-        'PORT': '5432',
+        'HOST': 'tramway.proxy.rlwy.net',
+        'PORT': '26438',
     }
 }
 
