@@ -58,7 +58,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 0  # Required by allauth. This is the row number in the "Sites" of Admin Site
+SITE_ID = 1  # Required by allauth. This is the row number in the "Sites" of Admin Site
 
 # Optional but recommended:
 ACCOUNT_LOGIN_METHODS = {'email'}  #This determines what field users log in with.
