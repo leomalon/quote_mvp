@@ -156,18 +156,31 @@ WSGI_APPLICATION = 'quote_mvp.wsgi.application'
 
 #This is for using Postgres in Railway
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+# DATABASE_URL = os.getenv('DATABASE_URL')
 
-if not DATABASE_URL:
-    raise Exception("DATABASE_URL is not set. Check Railway service variables.")
+# if not DATABASE_URL:
+#     raise Exception("DATABASE_URL is not set. Check Railway service variables.")
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=DATABASE_URL,
+#         conn_max_age=600,
+#         ssl_require=True  # Optional: for production security
+#     )
+# }
+
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        ssl_require=True  # Optional: for production security
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'rLICSxjkgWdgNcCkGNSMrJipfgQllVEl',
+        'HOST': 'postgres-zopb.railway.internal',
+        'PORT': '5432',
+    }
 }
+
 
 
 
