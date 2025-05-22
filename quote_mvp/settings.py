@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-for-local')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -155,20 +155,6 @@ WSGI_APPLICATION = 'quote_mvp.wsgi.application'
 # }
 
 #This is for using Postgres in Railway
-
-# DATABASE_URL = os.getenv('DATABASE_URL')
-
-# if not DATABASE_URL:
-#     raise Exception("DATABASE_URL is not set. Check Railway service variables.")
-
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=DATABASE_URL,
-#         conn_max_age=600,
-#         ssl_require=True  # Optional: for production security
-#     )
-# }
-
 
 DATABASES = {
     'default': {
