@@ -29,6 +29,11 @@
 
                 {% if field.name == 'email' and is_social_registration %}
                     <input type="email" class="input-field" value="{{ field.value }}" disabled>
+                {% elif field.name == 'password1' or field.name == 'password2' %}
+                    {{ field }}
+                    <label class="show-password-label">
+                        <input type="checkbox" onclick="togglePassword('{{ field.auto_id }}')">
+                    </label>
                 {% else %}
                     {{ field }}
                 {% endif %}
