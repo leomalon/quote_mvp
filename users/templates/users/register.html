@@ -33,7 +33,13 @@
                     <div class="password-wrapper">
                         {{ field }}
                         <span class="toggle-password" onclick="togglePassword('{{ field.auto_id }}', this)">
-                            👁️
+                            <!-- Eye open (default) -->
+                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="black" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
                         </span>
                     </div>
                 {% else %}
@@ -57,42 +63,30 @@
 </div>
 
 <script>
-function togglePassword(fieldId, icon) {
+function togglePassword(fieldId, iconWrapper) {
     const input = document.getElementById(fieldId);
-    if (input) {
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.textContent = '🙈'; // Eye closed
-        } else {
-            input.type = 'password';
-            icon.textContent = '👁️'; // Eye open
-        }
-    }
+    if (!input) return;
+
+    const isVisible = input.type === 'text';
+    input.type = isVisible ? 'password' : 'text';
+
+    // Toggle icon
+    iconWrapper.innerHTML = isVisible ? `
+        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="black" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+    ` : `
+        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="black" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.27-2.944-9.543-7a10.053 10.053 0 013.155-4.547M6.47 6.47A9.956 9.956 0 0112 5c4.478 0 8.27 2.944 9.543 7a10.05 10.05 0 01-1.249 2.527M9.88 9.88a3 3 0 014.24 4.24M3 3l18 18" />
+        </svg>
+    `;
 }
 </script>
 
-<style>
-.password-wrapper {
-    position: relative;
-}
-
-.password-wrapper input[type="password"],
-.password-wrapper input[type="text"] {
-    width: 100%;
-    padding-right: 2.5rem;
-}
-
-.toggle-password {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 1.1rem;
-    color: #666;
-    user-select: none;
-}
-</style>
 
 {% endblock %}
 
