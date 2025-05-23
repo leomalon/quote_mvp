@@ -22,7 +22,12 @@ def register(request):
 
         # Redirect if user is already fully registered
         if request.user.ruc and request.user.company and request.user.rol:
-            return redirect('quotes:quotes_all')
+            return redirect('quotes:quotes_all') #When this happens the later code will not be executed
+        
+        return render(request,'users/register.html',{
+            'social_email':social_email,
+            'is_social_user':is_social_user,
+        })
 
     if request.method == 'POST':
         if request.user.is_authenticated:
