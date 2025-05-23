@@ -30,10 +30,12 @@
                 {% if field.name == 'email' and is_social_registration %}
                     <input type="email" class="input-field" value="{{ field.value }}" disabled>
                 {% elif field.name == 'password1' or field.name == 'password2' %}
-                    {{ field }}
-                    <label class="show-password-label">
-                        <input type="checkbox" onclick="togglePassword('{{ field.auto_id }}')">
-                    </label>
+                    <div class="password-wrapper">
+                        {{ field }}
+                        <span class="toggle-password" onclick="togglePassword('{{ field.auto_id }}', this)">
+                            👁️
+                        </span>
+                    </div>
                 {% else %}
                     {{ field }}
                 {% endif %}
@@ -53,6 +55,45 @@
         </form>
     </div>
 </div>
+
+<script>
+function togglePassword(fieldId, icon) {
+    const input = document.getElementById(fieldId);
+    if (input) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = '🙈'; // Eye closed
+        } else {
+            input.type = 'password';
+            icon.textContent = '👁️'; // Eye open
+        }
+    }
+}
+</script>
+
+<style>
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    width: 100%;
+    padding-right: 2.5rem;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #666;
+    user-select: none;
+}
+</style>
+
 {% endblock %}
 
 
