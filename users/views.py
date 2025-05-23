@@ -20,15 +20,6 @@ def register(request):
         except SocialAccount.DoesNotExist:
             pass
 
-        # Redirect if user is already fully registered
-        if request.user.ruc and request.user.company and request.user.rol:
-            return redirect('quotes:quotes_all') #When this happens the later code will not be executed
-        
-        return render(request,'users/register.html',{
-            'social_email':social_email,
-            'is_social_user':is_social_user,
-        })
-
     if request.method == 'POST':
         if request.user.is_authenticated:
             # Existing social-authenticated user completing registration
@@ -59,11 +50,14 @@ def register(request):
     else:
         # Handle GET request to show the registration form
         if request.user.is_authenticated:
+            if request.user.ruc and request.user.company and request.user.rol:
+                return redirect('quotes:quotes_all')
             form = CustomUserRegistrationForm(instance=request.user, social_email=social_email)
         else:
             form = CustomUserRegistrationForm()
 
     return render(request, 'users/register.html', {
         'form': form,
-        'is_social_registration': is_social_user
+        'is_social_registration': is_social_user,
+        'social_email':social_email,
     })
