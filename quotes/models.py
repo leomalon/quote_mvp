@@ -14,6 +14,7 @@ class Cliente(models.Model):
     validators=[EmailValidator(message="Ingrese un correo válido.")],
     null=False,
     blank=False)
+    usuario_cliente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.contacto
