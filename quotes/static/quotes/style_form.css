@@ -94,6 +94,14 @@ form button[type="submit"]:hover {
   background-color: #f4b300da;
 }
 
+form #send_email{
+  background-color: var(--main-blue);
+}
+
+form #send_email:hover{
+  background-color: var(--main-blue-transition);
+}
+
 form .btn-secondary {
   background-color: var(--main-color-nav);
   color: var(--main-blue);
@@ -136,4 +144,12 @@ form .btn-secondary:hover {
   color: var(--file-name);
   font-size: 0.8rem;
   font-family: 'DM Sans';
+}
+
+ul.errorlist {
+  color: red;               /* Make the text red */
+  list-style-type: none;    /* Remove bullet points */
+  padding-left: 0;          /* Remove default padding */
+  margin: 0 0 5px 0;        /* Optional: adjust spacing */
+  font-size: 0.75rem;        /* Optional: slightly smaller text */
 }

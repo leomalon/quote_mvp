@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField("Nombre", max_length=255)
     last_name = models.CharField("Apellido", max_length=255)
     email = models.EmailField(unique=True, verbose_name='Correo electrónico') 
-    telefono_movil = models.CharField(max_length=20, blank=True)
+    telefono_movil = models.CharField(max_length=9, blank=True,validators=[MinLengthValidator(8, 'El número de celular debe tener exactamente 9 dígitos')])
     ruc = models.CharField(
         max_length=11,
         validators=[RegexValidator(regex=r'^\d{11}$', message='El RUC debe tener exactamente 11 dígitos.')],
@@ -45,7 +45,7 @@ class CustomUser(AbstractUser):
         blank=True,
         null=True
     )
-    company = models.CharField(max_length=255, verbose_name='Empresa')
+    company = models.CharField(max_length=255, verbose_name='Empresa',validators=[MinLengthValidator(2, 'Debes ingresar más de 2 caracteres')])
     rol = models.CharField(max_length=255, verbose_name="Puesto",validators=[MinLengthValidator(2, 'Debes ingresar más de 2 caracteres')])
 
     objects = CustomUserManager()

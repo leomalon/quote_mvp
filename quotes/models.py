@@ -35,10 +35,10 @@ class Quote(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     nombre = models.CharField("Nombre de la cotización", max_length=255, 
-                              validators=[MinLengthValidator(2,"Nombre debe ser mayor a 2 letras")],
+                              validators=[MinLengthValidator(2,"Ingresar un nombre de cotización mayor a 2 caracteres")],
                               null=False,
                               blank=False)
-    description = models.TextField("Breve descripción de la cotización")
+    description = models.TextField("Breve descripción de la cotización",validators=[MinLengthValidator(5,"Ingresar una descripción mayor a 5 caracteres")])
     fecha_creacion = models.DateTimeField("Fecha", auto_now_add=True)
     estado = models.CharField(
         "Estado",
@@ -52,7 +52,7 @@ class Quote(models.Model):
     pdf = models.FileField(
         "Archivo PDF",
         upload_to='quotes_pdfs/', #Defines a directory "MEDIA_ROOT" where files will be stored
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'],message='Solo se permiten archivos en formato PDF.')],
         blank=False,
         null=False
     )

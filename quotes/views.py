@@ -56,6 +56,11 @@ class QuoteCreateView(OwnerCreateView):
         return context
 
     def form_valid(self, form):
+        action = self.request.POST.get('action')  
+
+        if action == "send" and not form.cleaned_data.get('pdf'):
+            form.add_error('pdf', "El archivo PDF está faltando")
+            return self.form_invalid(form)
         # 1. Extract the values that came from the user in the form
         contacto = form.cleaned_data['contacto']
         email = form.cleaned_data['email_contacto']
@@ -67,7 +72,8 @@ class QuoteCreateView(OwnerCreateView):
                 contacto=contacto,
                 defaults={
                     'email_contacto': email,
-                    'cliente_empresa': empresa
+                    'cliente_empresa': empresa,
+                    'usuario_cliente':self.request.user
                 }
             )
 
@@ -75,10 +81,11 @@ class QuoteCreateView(OwnerCreateView):
         form.instance.cliente = cliente  # this sets the FK in the Quote model
         response = super().form_valid(form) #here we do the default steps to set the object and return the redirect
 
-        self.send_quote_email(self.object)
+        if action == "send":
+            self.send_quote_email(self.object)
+            return redirect(f"{self.success_url}?email_sent=1")
 
-
-        return redirect(f"{self.success_url}?email_sent=1")
+        return redirect(self.success_url)
 
     def send_quote_email(self, quote):
             subject = f"Cotización: {quote.nombre} - {quote.cliente.cliente_empresa}"
@@ -155,6 +162,11 @@ class QuoteUpdateView(OwnerUpdateView):
 
 
     def form_valid(self, form):
+        action = self.request.POST.get('action')  
+
+        if action == "send" and not form.cleaned_data.get('pdf'):
+            form.add_error('pdf', "El archivo PDF está faltando")
+            return self.form_invalid(form)
         contacto = form.cleaned_data['contacto']
         email = form.cleaned_data['email_contacto']
         empresa = form.cleaned_data['cliente_empresa']
@@ -163,7 +175,8 @@ class QuoteUpdateView(OwnerUpdateView):
             contacto=contacto,
             defaults={
                 'email_contacto': email,
-                'cliente_empresa': empresa
+                'cliente_empresa': empresa,
+                'usuario_cliente':self.request.user
             }
         )
 
@@ -171,7 +184,7 @@ class QuoteUpdateView(OwnerUpdateView):
         response = super().form_valid(form)
 
         # ✅ Only send email if PDF changed
-        if self.original_pdf != self.object.pdf:
+        if action == "send":
             self.send_quote_email(self.object)
             return redirect(f"{self.success_url}?email_sent=1")
     

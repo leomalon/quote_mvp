@@ -21,22 +21,27 @@
       {% csrf_token %}
       <div>
         {{ form.nombre }}
+        {{ form.nombre.errors }}
       </div>
       <div>
         {{ form.description }}
+        {{ form.description.errors }}
+      </div>
+      <div>
+        {{ form.cliente_empresa}}
+        {{ form.cliente_empresa.errors }}
       </div>
       <div>
         {{ form.contacto }}
+        {{ form.contacto.errors }}
       </div>
       <div>
         {{ form.email_contacto }}
-      </div>
-      <div>
-
-        {{ form.cliente_empresa}}
+        {{ form.email_contacto.errors }}
       </div>
       <div>
         {{ form.precio}}
+        {{ form.precio.errors }}
       </div>
       <div class="estado">
 
@@ -44,6 +49,7 @@
       </div>
       <div class="file-upload-wrapper">
         {{ form.pdf.as_widget }}
+        {{ form.pdf.errors }}
         
         <!-- Custom button -->
         <button type="button" id="custom-upload-btn">
@@ -68,13 +74,6 @@
 
       <!-- Here there is an html like this: <input id = "id_contacto"... -->
 
-      <!-- Link contacto input to datalist -->
-      <datalist id="contacto_list">
-        {% for cliente in contacto_data %}
-          <option value="{{ cliente.contacto }}"></option>
-        {% endfor %}
-      </datalist>
-
       <script>
         
         // Script para hacer funcionar los botones personalizados
@@ -90,30 +89,12 @@
           const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "Ningún archivo seleccionado";
           fileNameDisplay.textContent = fileName;
         });
-        
-        // Inject contacto data as JSON safely
-        const contactoData = {{ contacto_data_json|safe }};
-
-        // Get the input by ID Django assigns (ensure the ID matches the form field name)
-        const contactoInput = document.getElementById('id_contacto');
-
-        // Attach the datalist to the input
-        contactoInput.setAttribute("list", "contacto_list"); //Tells the input field for contacto to use the datalist with ID "contacto_list" for autocomplete
-
-        contactoInput.addEventListener('change', () => { //It activates when the user selects or types something in the field
-          const match = contactoData.find(c => c.contacto === contactoInput.value);
-          if (match) {
-            // Autofill fields by ID (these fields must be in your form)
-            document.getElementById('id_email_contacto').value = match.email_contacto;
-            document.getElementById('id_cliente_empresa').value = match.cliente_empresa;
-          }
-        });
       </script>
       <div class="actions-buttons">
-        <button type="submit">Guardar</button>
-        <a href="{% url 'quotes:quotes_all' %}" class="btn btn-secondary">Cancelar</a>
-
-      </div>
+            <button type="submit" name="action" value="save">Guardar</button>
+            <button type="submit" name="action" value="send" id="send_email">Enviar correo</button>
+            <a href="{% url 'quotes:quotes_all' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 
 

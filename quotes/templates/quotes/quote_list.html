@@ -137,7 +137,11 @@
             <td>{{ quote.precio|floatformat:2 }}</td>
             <td>{{ quote.cliente.cliente_empresa }}</td>
             <td>{{ quote.fecha_creacion|date:"d/m/Y" }}</td>
+            {%if quote.pdf%}
             <td><a id="pdf-detail" href="{{ quote.pdf.url }}" target="_blank">Ver PDF</a></td>
+            {%else%}
+            <td><a id="pdf-detail" href="{% url 'quotes:quote_update' quote.id %}">Agregar PDF</a></td>
+            {%endif%}
         </tr>
     {% endfor %}
     </tbody>
@@ -163,7 +167,7 @@
 </div>
 
 {% else %}
-<p>Aún no tienes cotizaciones. Agrega una nueva cotización</p>
+<p>  Aún no tienes cotizaciones. Agrega una nueva cotización</p>
 {% endif %}
 
 
@@ -224,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Remove param from URL
         window.history.replaceState({}, document.title, window.location.pathname);
 
-        // Hide toast after 3 seconds
+        // Hide toast after 4 seconds
         setTimeout(() => {
         toast.style.display = "none";
         }, 4000);

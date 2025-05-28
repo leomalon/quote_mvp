@@ -114,7 +114,8 @@ form input {
 }
 
 .error-message {
-  color: #e63946;
+  color: red;
+  margin-left: 0.7rem;
   font-size: 0.75rem;
   margin-top: 0.2rem;
 }
