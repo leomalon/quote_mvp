@@ -115,3 +115,37 @@ form input {
 .btn-google:hover {
   background-color: #0a2542;
 }
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+    height: auto;
+  }
+
+  .login-card {
+    padding: 1.5rem 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none; /* optional: remove shadow on mobile */
+    border: none;
+  }
+
+  .btn-main,
+  .btn-google {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .login-card h3 {
+    font-size: 1rem;
+  }
+
+  .login-card p {
+    font-size: 1rem;
+  }
+
+  form input {
+    font-size: 1rem;
+    padding: 0.7rem;
+  }
+}
