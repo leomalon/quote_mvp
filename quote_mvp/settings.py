@@ -83,6 +83,8 @@ LOGIN_URL = reverse_lazy('login') #This is the path that will send users no auth
 LOGIN_REDIRECT_URL = reverse_lazy('users:register')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
+ACCOUNT_ADAPTER = "quote_mvp.adapters.CustomAccountAdapter"
+
 SOCIALACCOUNT_LOGIN_ON_GET = True #This avoids using the intermidiate page from allauth when clicking "Login with Google"
 ACCOUNT_UNIQUE_EMAIL = True
 
