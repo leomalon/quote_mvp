@@ -117,19 +117,21 @@ form input {
 }
 
 @media (max-width: 480px) {
-  body {
-    padding: 1rem;
-    height: auto;
+  .login-container {
+    padding: 1rem; /* Prevent touching edges */
+    height: auto; /* Allow content to expand naturally */
+    align-items: flex-start; /* No need to force vertical centering */
   }
 
   .login-card {
-    padding: 1.5rem 1rem;
     width: 100%;
     max-width: 100%;
-    box-shadow: none; /* optional: remove shadow on mobile */
     border: none;
+    box-shadow: none;
+    padding: 1.5rem 1rem;
   }
 
+  form input,
   .btn-main,
   .btn-google {
     font-size: 1rem;
@@ -137,15 +139,10 @@ form input {
   }
 
   .login-card h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .login-card p {
     font-size: 1rem;
-  }
-
-  form input {
-    font-size: 1rem;
-    padding: 0.7rem;
   }
 }
