@@ -38,17 +38,18 @@ class CustomUserRegistrationForm(forms.ModelForm):
                 if field_name not in reordered:
                     reordered[field_name] = self.fields[field_name]
             self.fields = reordered
+            
+            self.fields['first_name'].error_messages = {
+            'required': 'El nombre es obligatorio.'
+            }
+            self.fields['last_name'].error_messages = {
+                'required': 'El apellido es obligatorio.'
+            }
 
 
         self.fields['email'].error_messages = {
             'required': 'El correo electrónico es obligatorio.',
             'invalid': 'Introduce un correo electrónico válido.',
-        }
-        self.fields['first_name'].error_messages = {
-            'required': 'El nombre es obligatorio.'
-        }
-        self.fields['last_name'].error_messages = {
-            'required': 'El apellido es obligatorio.'
         }
         self.fields['company'].error_messages = {
             'required': 'El nombre de Empresa es obligatorio.'
