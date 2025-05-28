@@ -21,7 +21,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         # Dynamically add fields only for non-social users
         if not self.instance.pk:
             self.fields['first_name'] = forms.CharField(label='Nombre', max_length=255,validators=[MinLengthValidator(3, 'Ingresa un nombre válido')])
-            self.fields['last_name'] = forms.CharField(label='Apellido', max_length=255,max_length=255,validators=[MinLengthValidator(3, 'Ingresa un apellido válido')])
+            self.fields['last_name'] = forms.CharField(label='Apellido', max_length=255,validators=[MinLengthValidator(3, 'Ingresa un apellido válido')])
             self.fields['email'].required = True
             self.fields['password1'].required = True
             self.fields['password2'].required = True
