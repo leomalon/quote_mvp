@@ -82,7 +82,7 @@ from django.urls import reverse_lazy
 LOGIN_URL = reverse_lazy('login') #This is the path that will send users no authorized.
 LOGIN_REDIRECT_URL = reverse_lazy('users:register')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
-
+ACCOUNT_SIGNUP_REDIRECT_URL = reverse_lazy('users:register')
 ACCOUNT_ADAPTER = "quote_mvp.adapters.CustomAccountAdapter"
 
 SOCIALACCOUNT_LOGIN_ON_GET = True #This avoids using the intermidiate page from allauth when clicking "Login with Google"
