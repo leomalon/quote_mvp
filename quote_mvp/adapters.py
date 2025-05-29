@@ -14,4 +14,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             except SocialAccount.DoesNotExist:
                 pass
 
-        return resolve_url("quotes:quotes_all")
+        return resolve_url("users:register")
