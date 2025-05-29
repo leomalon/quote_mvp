@@ -13,6 +13,6 @@ urlpatterns = [
         views.QuoteUpdateView.as_view(success_url=reverse_lazy('quotes:quotes_all')), name='quote_update'),
     path('<int:pk>/update_estado',views.update_estado, name='update_estado'),
     path('quote/<int:pk>/delete',
-        views.QuoteDeleteView.as_view(success_url=reverse_lazy('quotes:quotes_all')), name='quote_delete')
-
+        views.QuoteDeleteView.as_view(success_url=reverse_lazy('quotes:quotes_all')), name='quote_delete'),
+    path('ajax/send_email/<int:pk>/', views.ajax_send_quote_email, name='ajax_send_email')
 ]
