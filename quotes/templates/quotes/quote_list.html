@@ -110,12 +110,17 @@
     {% for quote in quote_list %}
         <tr>
             <td>
+                <div class="icons-actions-flex">
+
                 <a href="{% url 'quotes:quote_update' quote.id %}" class="btn btn-sm btn-outline-dark">
                     <img src="{% static 'quotes/icons/editar.png' %}" alt="Edit" width="16" height="16">
                 </a>
                 <a href="{% url 'quotes:quote_delete' quote.id %}" class="btn btn-sm btn-outline-danger">
                      <img src="{% static 'quotes/icons/borrar.png' %}" alt="Delete" width="16" height="16">
                 </a>
+                <button class="icon-button send-email-btn" data-id="{{ quote.id }}" id ="black_email" style="{% if quote.email_sent_count > 0 %}display:none;{% endif %}"><img src="{% static 'quotes/icons/sin_enviar.png' %}" alt="Delete" width="19.11" height="19.2"></button>
+                <button class="icon-button send-email-btn" data-id="{{ quote.id }}" id="green_email" style="{% if quote.email_sent_count > 0 %}display:block;{%else%} display: none;{% endif %}"><img src="{% static 'quotes/icons/enviado.png' %}" alt="Delete" width="19.11" height="19.2"></button>
+                </div>
             </td>
             <td>
                 <span class="badge estado-badge {{ quote.estado|lower|slugify }}">
@@ -185,18 +190,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const quoteId = selectElement.dataset.quoteId;
         const newEstado = selectElement.value;
         const csrfToken = getCSRFToken();
-        const newStatus = selectElement.value
-            .normalize("NFD") // separate accents from letters
-            .replace(/[\u0300-\u036f]/g, "") // remove accents
+        const newStatus = newEstado
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLowerCase()
             .replace(/\s+/g, '-');
         const badge = selectElement.closest('.estado-badge');
 
-        // Remove all previous status-related classes
-        badge.className = 'badge estado-badge'; // reset base classes
-        badge.classList.add(newStatus); // add the new status class
+        // Reset and apply new status class
+        badge.className = 'badge estado-badge';
+        badge.classList.add(newStatus);
 
-        const updateUrl =  `{% url 'quotes:update_estado' 0 %}`.replace("0", quoteId);
+        const updateUrl = `{% url 'quotes:update_estado' 0 %}`.replace("0", quoteId);
 
         fetch(updateUrl, {
             method: 'POST',
@@ -204,9 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken
             },
-            body: new URLSearchParams({
-                'estado': newEstado
-            })
+            body: new URLSearchParams({ 'estado': newEstado })
         })
         .then(response => {
             if (!response.ok) {
@@ -218,22 +221,57 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Error de red al actualizar el estado.");
         });
     };
-});
 
+    // Email button handler
+    const buttons = document.querySelectorAll('.send-email-btn');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const quoteId = this.dataset.id;
+            const csrfToken = getCSRFToken();
+
+            fetch(`/ajax/send_email/${quoteId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const toast = document.getElementById("email-toast");
+                    const icon_email = document.getElementById("green_email");
+                    const icon_email_not_sent = document.getElementById("black_email");
+                    toast.style.display = "block";
+                    icon_email.style.display = "block";
+                    icon_email_not_sent.style.display = "none";
+                    setTimeout(() => {
+                    toast.style.display = "none";
+                    }, 4000);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error inesperado: ' + error);
+            });
+        });
+    });
+
+    // Handle ?email_sent=1 in URL
     const params = new URLSearchParams(window.location.search);
     if (params.get("email_sent") === "1") {
         const toast = document.getElementById("email-toast");
         toast.style.display = "block";
 
-        // Remove param from URL
+        // Remove param from URL and hide toast after 4s
         window.history.replaceState({}, document.title, window.location.pathname);
-
-        // Hide toast after 4 seconds
         setTimeout(() => {
-        toast.style.display = "none";
+            toast.style.display = "none";
         }, 4000);
     }
-
+});
 </script>
 {%endblock%}
 </body>

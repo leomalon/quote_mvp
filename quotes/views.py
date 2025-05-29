@@ -112,7 +112,8 @@ class QuoteCreateView(OwnerCreateView):
                 email.attach_file(quote.pdf.path)  #Remember the quote.pdf is an object with attributes like .path and .url or .name
 
             email.send()
-
+            quote.email_sent_count = (quote.email_sent_count or 0) + 1
+            quote.save(update_fields=['email_sent_count'])  # Only update this field
 
 class QuoteDetailView(OwnerDetailView):
     model = Quote
@@ -216,7 +217,8 @@ class QuoteUpdateView(OwnerUpdateView):
                 email.attach_file(quote.pdf.path)
 
             email.send()
-
+            quote.email_sent_count = (quote.email_sent_count or 0) + 1
+            quote.save(update_fields=['email_sent_count'])  # Only update this field
 
 
     # def get(self, request, pk):
@@ -261,4 +263,45 @@ def update_estado(request, pk):
     except Quote.DoesNotExist:
         return JsonResponse({'error': 'Quote not found'}, status=404)
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+@require_POST
+@login_required
+@csrf_exempt  # Alternatively, you can use CSRF token via JS
+def ajax_send_quote_email(request, pk):
+    try:
+        quote = Quote.objects.get(pk=pk, usuario=request.user)
+
+        if not quote.pdf:
+            return JsonResponse({'success': False, 'error': 'No hay un PDF adjunto.'}, status=400)
+
+        # Reuse existing email-sending logic
+        subject = f"Cotización: {quote.nombre} - {quote.cliente.cliente_empresa}"
+        message = render_to_string('quotes/email_quote.html', {
+            'quote': quote,
+            'user': quote.usuario,
+        })
+
+        email = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[quote.cliente.email_contacto],
+            cc=[quote.usuario.email],
+        )
+        email.content_subtype = "html"
+
+        if quote.pdf:
+            email.attach_file(quote.pdf.path)
+
+        email.send()
+        quote.email_sent_count = (quote.email_sent_count or 0) + 1
+        quote.save(update_fields=['email_sent_count'])  # Only update this field
+        print(f"Quote {quote.id} email_sent_count is now {quote.email_sent_count}")
+        return JsonResponse({'success': True})
+    
+    except Quote.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Quote not found.'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)

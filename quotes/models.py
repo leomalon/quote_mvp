@@ -57,7 +57,7 @@ class Quote(models.Model):
         null=False
     )
 
-
+    email_sent_count = models.PositiveIntegerField(default=0)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=False, blank=False) #Every quote related with a "Cliente"
 
     cotizacion_id = models.CharField("Cotización ID", max_length=55,blank=True, editable=False)
