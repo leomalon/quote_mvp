@@ -14,7 +14,7 @@
   <div class="login-card">
     <h3>LOG IN</h3>
     <p>Bienvenido a <span class="highlight">CotiLink!</span></p>
-    <p>Inicia sesión o<span class="highlight"><a href="{% url 'users:register' %}">Registrate</a></span></p>
+    <p>Inicia sesión o <span class="highlight"><a href="{% url 'users:register' %}" id="register_button">Registrate</a></span></p>
 
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
