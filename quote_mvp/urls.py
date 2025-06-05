@@ -33,8 +33,8 @@ urlpatterns = [
     ),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
-    path('',include('quotes.urls')),
-    path('users/',include('users.urls'))
+    path('cotizaciones',include('quotes.urls')),
+    path('',include('users.urls'))
 ] 
 
 #Just in development
