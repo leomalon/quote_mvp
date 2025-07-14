@@ -70,9 +70,9 @@ class QuoteCreateView(OwnerCreateView):
         # If not found, create a new one with the provided email and empresa.
         cliente, created = Cliente.objects.update_or_create(
                 contacto=contacto,
+                cliente_empresa = empresa,
                 defaults={
                     'email_contacto': email,
-                    'cliente_empresa': empresa,
                     'usuario_cliente':self.request.user
                 }
             )
