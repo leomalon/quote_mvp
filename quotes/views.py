@@ -174,9 +174,9 @@ class QuoteUpdateView(OwnerUpdateView):
 
         cliente, created = Cliente.objects.update_or_create(
             contacto=contacto,
+            cliente_empresa=empresa,
             defaults={
                 'email_contacto': email,
-                'cliente_empresa': empresa,
                 'usuario_cliente':self.request.user
             }
         )
